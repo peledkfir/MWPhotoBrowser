@@ -14,11 +14,11 @@
 #import "MWPhotoBrowser.h"
 
 @interface MWPhoto () {
-
+    
     BOOL _loadingInProgress;
     id <SDWebImageOperation> _webImageOperation;
     PHImageRequestID _assetRequestID;
-        
+    
 }
 
 @property (nonatomic, strong) UIImage *image;
@@ -37,7 +37,7 @@
 #pragma mark - Class Methods
 
 + (MWPhoto *)photoWithImage:(UIImage *)image {
-	return [[MWPhoto alloc] initWithImage:image];
+    return [[MWPhoto alloc] initWithImage:image];
 }
 
 + (MWPhoto *)photoWithURL:(NSURL *)url {
@@ -191,7 +191,7 @@
     @try {
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
         _webImageOperation = [manager downloadImageWithURL:url
-                                                   options:0
+                                                   options:self.loadingOptions
                                                   progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                                                       if (expectedSize > 0) {
                                                           float progress = receivedSize / (float)expectedSize;
@@ -285,13 +285,13 @@
             [self imageLoadingComplete];
         });
     }];
-
+    
 }
 
 // Release if we can get it again from path or url
 - (void)unloadUnderlyingImage {
     _loadingInProgress = NO;
-	self.underlyingImage = nil;
+    self.underlyingImage = nil;
 }
 
 - (void)imageLoadingComplete {
